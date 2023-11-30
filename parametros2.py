@@ -9,7 +9,7 @@ try:
     consulta = ("SELECT apellido,oficio,salario FROM emp where salario between :p1 and :p2")
     cursor.execute(consulta, (minSalario, maxSalario))
 
-    print(cursor.rowcount, "registros encontrados")
+    # print(cursor.rowcount, "registros encontrados")
     for ape, ofi, sal in cursor:
         print("Apellido: ", ape)
         print("Oficio: ", ofi)
