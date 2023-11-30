@@ -1,20 +1,46 @@
 import cx_Oracle
+class Paciente:
+    def __init__(self):
+        self.connection = cx_Oracle.connect("system", "pythonoracle", "localhost/XE")
+    def consulta(self, nss):
+        cursor = self.connection.cursor()
+        nombre = cursor.var(cx_Oracle.STRING)
+        sexo = cursor.var(cx_Oracle.STRING)
 
-connection = cx_Oracle.connect("system", "pythonoracle", "localhost/XE")
+        cursor = self.connection.cursor()
+        try:
+            args = (nss, nombre, sexo)
+            cursor.callproc('DatosPaciente', args)
+            return nombre.getvalue(), 'HOMBRE' if sexo.getvalue() == 'M' else 'MUJER'
+        except self.connection.Error as error:
+            print("Error: ", error)
 
-cursor = connection.cursor()
-try:
+def menu():
+    print("")
+    print("1. Consulta de Paciente")
+    print("2. Salir")
+    try:
+        opcion = int(input("Ingrese una opcion: "))
+    except ValueError:
+        print("Ingrese una opcion valida")
+        return menu()
+    print("")
+    return opcion
 
-    nss = input("Número de nss: ")
-    nombre = cursor.var(cx_Oracle.STRING)
-    sexo = cursor.var(cx_Oracle.STRING)
+def main():
+    paciente = Paciente()
 
-    args = (nss, nombre, sexo)
-    cursor.callproc('DatosPaciente', args)
-    print('Nombre: ', nombre.getvalue())
-    print('Sexo: ', 'HOMBRE' if sexo.getvalue() == 'M' else 'MUJER')
+    while True:
+        opcion = menu()
+        if opcion == 1:
+            nss = input("Ingrese el numero de nss: ")
+            nombre, sexo = paciente.consulta(nss)
+            print(f'Nombre: {nombre}\tSexo: {sexo}')
+        elif opcion == 2:
+            break
+        else:
+            print("Ingrese una opcion valida")
+    paciente.connection.close()
 
-except connection.Error as error:
-    print("Error: ", error)
-cursor.close()
-connection.close()
+if __name__ == '__main__':
+    main()

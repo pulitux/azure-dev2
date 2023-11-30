@@ -27,7 +27,7 @@ class Departamento:
             self.connection.commit()
         except self.connection.Error as error:
             print("Error: ", error)
-
+        cursor.close()
         # connection.close()
 
     def baja(self):
@@ -51,7 +51,7 @@ class Departamento:
             self.connection.commit()
         except self.connection.Error as error:
             print("Error: ", error)
-
+        cursor.close()
         # self.connection.close()
 
     def modificacion(self):
@@ -76,7 +76,7 @@ class Departamento:
             self.connection.commit()
         except self.connection.Error as error:
             print("Error: ", error)
-
+        cursor.close()
         # connection.close()
 
     def consulta(self):
@@ -90,7 +90,7 @@ class Departamento:
                 print(f'Codigo: {codigo}\tNombre: {nombre}\tLocalidad: {localidad}')
         except self.connection.Error as error:
             print("Error: ", error)
-
+        cursor.close()
         # connection.close()
 
 
